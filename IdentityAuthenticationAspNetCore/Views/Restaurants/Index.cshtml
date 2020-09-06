@@ -1,0 +1,57 @@
+﻿@model IList<Restaurant>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card">
+    <div class="card-header">
+        All Restaurants
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Cuisine</th>
+                <th scope="col">City</th>
+                <th scope="col">Country</th>
+                <th scope="col">DineIn</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var restaurant in Model)
+            {
+                <tr>
+                    <td>@restaurant.Name</td>
+                    <td>@restaurant.Cuisine</td>
+
+                    <td>@restaurant.City</td>
+                    <td>@restaurant.Country</td>
+                    <td>
+                        @if (restaurant.DineIn)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+
+                        }
+                    </td>
+
+                    <td><a asp-action="edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit</a></td>
+                    @*<td>
+                        <form method="post">
+                            <button asp-route-id="@restaurant.Id" type="submit" asp-page-handler="delete" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>*@
+                </tr>
+            }
+            </tbody>
+        </table>
+        <a asp-action="create" class="btn btn-primary">Create Restaurant</a>
+
+    </div>
+</div>
