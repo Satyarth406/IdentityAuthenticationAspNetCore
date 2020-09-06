@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IdentityAuthenticationAspNetCore.Models;
+using IdentityAuthenticationAspNetCore.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using IdentityAuthenticationAspNetCore.Models;
-using IdentityAuthenticationAspNetCore.Repository;
 
 namespace IdentityAuthenticationAspNetCore.Controllers
 {
+    [Authorize]
     public class RestaurantsController : Controller
     {
         private readonly IRestaurantRepository _restaurantRepository;

@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using IdentityAuthenticationAspNetCore.DatabaseContext;
+using IdentityAuthenticationAspNetCore.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IdentityAuthenticationAspNetCore.Repository;
 
 namespace IdentityAuthenticationAspNetCore
 {
@@ -24,8 +23,19 @@ namespace IdentityAuthenticationAspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRestaurantRepository, RestaurantInMemoryRepository>();
-            services.AddControllersWithViews();
+            //services.AddSingleton<IRestaurantRepository, RestaurantInMemoryRepository>();
+            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
+
+            services.AddDbContext<RestaurantDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("RestaurantIdentityConnection"));
+            });
+            services.AddControllersWithViews(options=>
+            {
+                options.Filters.Add(new AuthorizeFilter());
+            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +55,7 @@ namespace IdentityAuthenticationAspNetCore
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
