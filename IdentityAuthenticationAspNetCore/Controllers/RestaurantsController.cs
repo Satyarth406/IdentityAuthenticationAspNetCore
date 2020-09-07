@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityAuthenticationAspNetCore.Controllers
 {
+    [Authorize]
     public class RestaurantsController : Controller
     {
         private readonly IRestaurantRepository _restaurantRepository;

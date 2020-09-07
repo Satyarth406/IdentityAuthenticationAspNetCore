@@ -31,6 +31,7 @@ namespace IdentityAuthenticationAspNetCore
                 options.UseSqlServer(Configuration.GetConnectionString("RestaurantIdentityConnection"));
             });
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +59,7 @@ namespace IdentityAuthenticationAspNetCore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Restaurants}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
